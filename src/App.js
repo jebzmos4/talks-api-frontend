@@ -302,7 +302,7 @@ const App = () => {
 
       <div>
         <br/>
-          <button onClick={handleClick}>Got To Chat</button>
+          <button onClick={handleClick}>Got To Chat Room</button>
       </div>
     </div>
   );
