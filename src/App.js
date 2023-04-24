@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import io from "socket.io-client";
 
 const App = () => {
   const [talks, setTalks] = useState(null);
@@ -17,34 +16,12 @@ const App = () => {
     email: "",
     address: "",
   });
-  const [messages, setMessages] = useState([]);
   const [talkInput, setTalkInput] = useState("");
-  const [inputValue, setInputValue] = useState("");
   const [showData, setShowData] = useState(false);
-  const socketRef = useRef(null);
 
   useEffect(() => {
     FetchAttendees();
   }, []);
-
-  useEffect(() => {
-    socketRef.current = io();
-    socketRef.current.on("chat message", (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg]);
-    });
-
-    return () => {
-      socketRef.current.disconnect();
-    };
-  }, []);
-
-  const handleChatSubmit = (e) => {
-    e.preventDefault();
-    if (inputValue) {
-      socketRef.current.emit("chat message", inputValue);
-      setInputValue("");
-    }
-  };
 
   useEffect(() => {
     FetchTalks();
