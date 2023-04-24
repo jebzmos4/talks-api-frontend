@@ -1,180 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import io from "socket.io-client";
-
-// const ENDPOINT = "http://localhost:3001";
-
-// const App = () => {
-//   const [talks, setTalks] = useState([]);
-//   const [talkTitle, setTalkTitle] = useState("");
-//   const [talkSpeaker, setTalkSpeaker] = useState("");
-//   const [attendees, setAttendees] = useState([]);
-//   const [attendeeName, setAttendeeName] = useState("");
-//   const [chatMessages, setChatMessages] = useState([]);
-//   const [chatMessage, setChatMessage] = useState("");
-
-//   const socket = io(ENDPOINT);
-
-//   useEffect(() => {
-//     socket.on("chat message", (msg) => {
-//       setChatMessages((prevMessages) => [...prevMessages, msg]);
-//     });
-//   }, [socket]);
-
-//   useEffect(() => {
-//     fetchTalks();
-//   }, []);
-
-//   const fetchTalks = async () => {
-//     const response = await fetch("http://localhost:3000/talks");
-//     const data = await response.json();
-//     setTalks(data);
-//   };
-
-//   const addTalk = async () => {
-//     const response = await fetch("http://localhost:3000//talks", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ title: talkTitle, speaker: talkSpeaker }),
-//     });
-//     const newTalk = await response.json();
-//     setTalks((prevTalks) => [...prevTalks, newTalk]);
-//     setTalkTitle("");
-//     setTalkSpeaker("");
-//   };
-
-//   const addAttendee = async () => {
-//     const response = await fetch("http://localhost:3000//attendees", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ name: attendeeName }),
-//     });
-//     const newAttendee = await response.json();
-//     setAttendees((prevAttendees) => [...prevAttendees, newAttendee]);
-//     setAttendeeName("");
-//   };
-
-//   const addAttendeeToTalk = async (talkId, attendeeId) => {
-//     await fetch(`http://localhost:3000//talks/${talkId}/attendees/${attendeeId}`, {
-//       method: "POST",
-//     });
-//     setTalks((prevTalks) =>
-//       prevTalks.map((talk) =>
-//         talk.id === talkId
-//           ? { ...talk, attendees: [...talk.attendees, attendeeName] }
-//           : talk
-//       )
-//     );
-//   };
-
-//   const deleteTalk = async (talkId) => {
-//     await fetch(`/talks/${talkId}`, {
-//       method: "DELETE",
-//     });
-//     setTalks((prevTalks) => prevTalks.filter((talk) => talk.id !== talkId));
-//   };
-
-//   const handleChatMessage = (e) => {
-//     e.preventDefault();
-//     if (chatMessage !== "") {
-//       socket.emit("chat message", { name: attendeeName, message: chatMessage });
-//       setChatMessage("");
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h1>Conference Talks</h1>
-
-//       <h2>Add Talk</h2>
-//       <form onSubmit={(e) => e.preventDefault()}>
-//         <label        >
-//           Attendee:
-//           <select
-//             value={attendeeName}
-//             onChange={(e) => setAttendeeName(e.target.value)}
-//           >
-//             <option value="">-- Select Attendee --</option>
-//             {attendees.map((attendee) => (
-//               <option key={attendee.id} value={attendee.name}>
-//                 {attendee.name}
-//               </option>
-//             ))}
-//           </select>
-//         </label>
-//         <button onClick={addTalk}>Add Talk</button>
-//       </form>
-
-//       <h2>Talks</h2>
-//       <button onClick={fetchTalks}>Fetch Talks</button>
-//       <ul>
-//         {talks.map((talk) => (
-//           <li key={talk.id}>
-//             <h3>{talk.title}</h3>
-//             <p>Speaker: {talk.speaker}</p>
-//             <ul>
-//               {talk.attendees.map((attendee) => (
-//                 <li key={attendee}>{attendee}</li>
-//               ))}
-//             </ul>
-//             <label>
-//               Add Attendee:
-//               <select
-//                 value={attendeeName}
-//                 onChange={(e) => setAttendeeName(e.target.value)}
-//               >
-//                 <option value="">-- Select Attendee --</option>
-//                 {attendees.map((attendee) => (
-//                   <option key={attendee.id} value={attendee.name}>
-//                     {attendee.name}
-//                   </option>
-//                 ))}
-//               </select>
-//               <button onClick={() => addAttendeeToTalk(talk.id, attendeeName)}>
-//                 Add
-//               </button>
-//             </label>
-//             <button onClick={() => deleteTalk(talk.id)}>Delete Talk</button>
-//           </li>
-//         ))}
-//       </ul>
-
-//       <h2>Chat</h2>
-//       <div>
-//         <form onSubmit={handleChatMessage}>
-//           <label>
-//             Name:
-//             <input
-//               type="text"
-//               value={attendeeName}
-//               onChange={(e) => setAttendeeName(e.target.value)}
-//             />
-//           </label>
-//           <label>
-//             Message:
-//             <input
-//               type="text"
-//               value={chatMessage}
-//               onChange={(e) => setChatMessage(e.target.value)}
-//             />
-//           </label>
-//           <button type="submit">Send</button>
-//         </form>
-//       </div>
-//       <ul>
-//         {chatMessages.map((msg, index) => (
-//           <li key={index}>
-//             <strong>{msg.name}: </strong>
-//             {msg.message}
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default App;
-
-
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import io from "socket.io-client";
@@ -330,6 +153,10 @@ const App = () => {
     }
   };
 
+    const handleClick = () => {
+        window.location.href = 'http://167.172.157.222:3033/chat';
+    };
+
   return (
     <div>
       <h1>Conference Talks</h1>
@@ -474,21 +301,8 @@ const App = () => {
       </div>
 
       <div>
-        <ul id="messages">
-          {messages.map((message, idx) => (
-            <li key={idx}>{message}</li>
-          ))}
-        </ul>
-        <form id="form" onSubmit={handleChatSubmit}>
-          <h2>Chat</h2>
-          <input
-            id="input"
-            autoComplete="off"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-          />
-          <button>Send</button>
-        </form>
+        <br/>
+          <button onClick={handleClick}>Got To Chat</button>
       </div>
     </div>
   );
